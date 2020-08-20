@@ -1,7 +1,7 @@
 import pytest
 
 def testPieceCounts(takGame):
-	size = takGame.size
+	size = takGame.board.size
 	pieces = takGame.pieces
 	capstones = takGame.capstones
 	correct = False
@@ -21,12 +21,12 @@ def testPieceCounts(takGame):
 
 def testIsAdjacent(takGame):
 	res = True
-	size = takGame.size
+	size = takGame.board.size
 	testLoc = [size//2, size//2]
 	for i in range(size):
 		for j in range(size):
 			if (((i==size//2 and abs(j-size//2) ==1) or (j==size//2 and abs(i-size//2) == 1))
-			 		is not takGame.isAdjacent(testLoc, [i, j])):
+			 		is not takGame.board.isAdjacent(testLoc, [i, j])):
 				res = False
 	assert res
 
@@ -34,13 +34,13 @@ def testAdjacent(takGame):
 	correct = True
 	location = [1, 1]
 	result = [[0, 1], [1, 0], [1, 2], [2, 1]]
-	testRes = takGame.adjacent(location)
+	testRes = takGame.board.adjacent(location)
 	for loc in result:
 		if loc not in testRes:
 			correct = False
 	location = [0,0]
 	result = [[0, 1], [1, 0]]
-	testRes = takGame.adjacent(location)
+	testRes = takGame.board.adjacent(location)
 	for loc in result:
 		if loc not in testRes:
 			correct = False
