@@ -1,17 +1,5 @@
 import collections
 
-def countRow(board, row):
-    count = collections.Counter()
-    for col in board.board[row]:
-        count = count + collections.Counter(col)
-    return count
-
-def countTotalPieces(board):
-    count = collections.Counter()
-    for i in range(board.size):
-        count = count + countRow(board, i)
-    return count
-
 def isFull(board):
     for row in board.board:
         for col in row:
@@ -19,13 +7,13 @@ def isFull(board):
                 return False
     return True
 
-def outOfPieces(board, pieces, capstones):
-    pC = countTotalPieces(board)
-    return (pC[1] == pieces and pC[3] == capstones) or (pC[-1] == pieces and pC[-3] == capstones)
+def outOfPieces(board):
+    pC = board.countTotalPieces()
+    return (pC[1] + pC[2] == board.pieces and pC[3] == board.capstones) or (pC[-1] + pC[-2] == board.pieces and pC[-3] == board.capstones)
 
-def end(board, pieces, capstones):
+def end(board):
     en = False
-    if outOfPieces(board, pieces, capstones):
+    if outOfPieces(board):
         en = True
     elif isFull(board):
         en = True
@@ -70,18 +58,20 @@ def road(board):
             p2road = True
     return p1road, p2road
 
-def points(board, pieces, capstones):
-    win = winner(board)
-    piecesLeft = capstones + pieces
+def points(board, player):
+    win = player
+    piecesLeft = board.capstones + board.pieces
     if win == 1:
-        piecesLeft = piecesLeft - (countTotalPieces(board)[1] + countTotalPieces(board)[3])
+        piecesLeft = piecesLeft - (board.countTotalPieces()[1] + board.countTotalPieces()[3])
     else:
-        piecesLeft = piecesLeft - (countTotalPieces(board)[-1] + countTotalPieces(board)[-3])
+        piecesLeft = piecesLeft - (board.countTotalPieces()[-1] + board.countTotalPieces()[-3])
     return (board.size**2) + piecesLeft
 
-def winRoad(board):
+def winRoad(board, player=1):
     rd = road(board)
-    if rd[0] == True:
+    if rd[0] and rd[1]:
+        return player
+    elif rd[0] == True:
         return 1
     elif rd[1] == True:
         return 2
@@ -101,8 +91,8 @@ def winFlat(board):
     else:
         return 2
 
-def winner(board):
-    if winRoad(board):
-        return winRoad(board)
+def winner(board, player=1):
+    if winRoad(board, player):
+        return winRoad(board, player)
     else:
         return winFlat(board)

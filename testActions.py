@@ -1,9 +1,5 @@
 import pytest, AuxiliaryTestingMethods as aux, Actions
 
-def testTurn(takGame):
-    assert takGame.turn()
-    assert takGame.turnCount == 1
-
 def testPlace(takGame):
     aux.resetBoard(takGame)
     Actions.place(takGame.board, [1, 1], 1)
@@ -42,6 +38,12 @@ def testCarryLimit(takGame):
     takGame.board.board[1][1] = [1,1,1,1,1,1,1,1,1,1]
     with pytest.raises(ValueError):
         Actions.move(takGame.board, [1,1], [1,2], [9])
+
+def testPiecesLeft(takGame):
+    aux.resetBoard(takGame)
+    Actions.place(takGame.board, [1,1], 3)
+    with pytest.raises(ValueError):
+        Actions.place(takGame.board, [0, 1], 3)
 
 @pytest.fixture(scope='module')
 def takGame():

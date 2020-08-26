@@ -2,23 +2,27 @@ import pytest, AuxiliaryTestingMethods as aux, End
 
 def testPoints(takGame):
     aux.resetBoard(takGame)
-    assert End.points(takGame.board, takGame.pieces, takGame.capstones) == takGame.pieces + takGame.capstones + (takGame.board.size**2)
+    assert End.points(takGame.board, 1) == takGame.board.pieces + takGame.board.capstones + (takGame.board.size**2)
     aux.fillRow(takGame, 0, 1)
     aux.fillSpace(takGame, [0, 0], 0)
-    assert End.points(takGame.board, takGame.pieces, takGame.capstones) == takGame.pieces + takGame.capstones + (takGame.board.size**2) - (takGame.board.size-1)
+    assert End.points(takGame.board, 1) == takGame.board.pieces + takGame.board.capstones + (takGame.board.size**2) - (takGame.board.size-1)
     aux.fillRow(takGame, 1, -1)
     aux.fillRow(takGame, 2, -1)
-    assert End.points(takGame.board, takGame.pieces, takGame.capstones) == takGame.pieces + takGame.capstones + (takGame.board.size**2) - (takGame.board.size*2)
+    assert End.points(takGame.board, 2) == takGame.board.pieces + takGame.board.capstones + (takGame.board.size**2) - (takGame.board.size*2)
 
 def testWinnerRoad(takGame):
     aux.resetBoard(takGame)
     aux.fillRow(takGame, 0, 1)
-    assert End.winRoad(takGame.board) == 1
+    assert End.winRoad(takGame.board, 1) == 1
     aux.resetBoard(takGame)
     aux.fillRow(takGame, 0, -1)
-    assert End.winRoad(takGame.board) == 2
+    assert End.winRoad(takGame.board, 1) == 2
     aux.resetBoard(takGame)
-    assert End.winRoad(takGame.board) == False
+    assert End.winRoad(takGame.board, 1) == False
+    aux.fillRow(takGame, 0, 1)
+    aux.fillRow(takGame, 1, -1)
+    assert End.winRoad(takGame.board, 1) == 1
+    assert End.winRoad(takGame.board, 2) == 2
 
 def testWinnerOther(takGame):
     aux.resetBoard(takGame)

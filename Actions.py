@@ -1,6 +1,23 @@
+def piecesLeft(board, val):
+    used = board.countTotalPieces()
+    if val > 0:
+        if val > 2 and used[3] >= board.capstones:
+            return False
+        elif used[1] + used[2] >= board.pieces:
+            return False
+    else:
+        if abs(val) > 2 and used[-3] >= board.capstones:
+            return False
+        elif used[-1] + used[-2] >= board.pieces:
+            return False
+    return True
 
 def place(board, loc, type):
-    if board.isEmpty(loc):
+    if not piecesLeft(board, type):
+        raise ValueError('No more of those pieces left')
+    elif abs(type) > 3 or type == 0:
+        raise ValueError('Not a valid piece')
+    elif board.isEmpty(loc):
         board.getLocation(loc)[-1] = type
     else:
         raise ValueError('This location has pieces you cant place here')
