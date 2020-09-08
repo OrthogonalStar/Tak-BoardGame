@@ -28,3 +28,4 @@ def fillBoardEndPiece(game):
 def resetBoard(game):
 	for i in range(game.board.size):
 		fillRow(game, i, 0)
+	game.turnCount = 1
