@@ -44,8 +44,8 @@ class TakGame(object):
     def checkLegalMoveStart(self, player, loc):
         return (player == 1 and self.board.getTop(loc) > 0) or (player == 2 and self.board.getTop(loc) < 0)
 
-    def checkLegalDrop(self, loc):
-        return abs(self.board.getTop(loc)) < 2
+    def checkLegalDrop(self, loc, held):
+        return (abs(self.board.getTop(loc)) < 2) or (held == 3 and self.board.getTop(loc) < 3)
 
     def checkLegalPickup(self, loc, num):
         return num <= len(self.board.getLocation(loc))

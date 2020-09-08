@@ -12,6 +12,9 @@ pygame.display.set_caption("Tak")
 font = pygame.font.SysFont('Arial', 18)
 background = pygame.Surface(resolution)
 background.fill(colors['black'])
+pieceImages = {'lightflat':pygame.image.load('flat-light.png'), 'lightwall':pygame.image.load('wall-light.png'),
+                'lightcapstone':pygame.image.load('capstone-light.png'), 'darkflat':pygame.image.load('flat-dark.png'),
+                'darkwall':pygame.image.load('wall-dark.png'), 'darkcapstone':pygame.image.load('capstone-dark.png'),}
 
 #board and button classes
 class board(object):
@@ -68,13 +71,13 @@ class buildMove(object):
         return loc1[0] == loc2[0] and loc1[1] == loc2[1]
 
     def drop(self, loc):
-        if game.board.isAdjacent(loc, self.start) and self.direction is None and game.checkLegalDrop(loc):
+        if game.board.isAdjacent(loc, self.start) and self.direction is None and game.checkLegalDrop(loc, game.board.getLocation(self.start)[-self.hand]):
             self.direction = [loc[0]-self.start[0], loc[1] - self.start[1]]
             self.dropLocations.append(loc)
             self.hand -= 1
             self.current = loc
 
-        if self.direction is not None and (self.same(self.current, loc) or self.next(loc)) and self.hand > 0 and game.checkLegalDrop(loc):
+        elif self.direction is not None and (self.same(self.current, loc) or self.next(loc)) and self.hand > 0 and game.checkLegalDrop(loc, game.board.getLocation(self.start)[-self.hand]):
             self.dropLocations.append(loc)
             self.hand -= 1
             self.current = loc
@@ -96,13 +99,35 @@ class buildMove(object):
     def getEnd(self):
         return self.dropLocations[-1]
 
+#get correct image to draw onto the board for each piece
+def selectPieceImage(value):
+    key = ''
+    if value > 0:
+        key += 'light'
+    else:
+        key += 'dark'
+    if abs(value) == 3:
+        key += 'capstone'
+    elif abs(value) == 2:
+        key += 'wall'
+    else:
+        key += 'flat'
+    return pieceImages[key]
+
 #render the board as a printable set to show pieces
-def renderBoard(game):
-    lst = []
+def renderPieces(game, board):
     for i in range(game.board.size):
         for j in range(game.board.size):
-            lst.append(renderStandard(str(game.board.getLocation([i, j]))))
-    return lst
+            pieceStack = game.board.getLocation([i, j])
+            boardSquare = board.squareCentres[i*board.size+j]
+            coordinate = boardSquare[:2]
+            for x in range(len(pieceStack)):
+                if pieceStack[x] is not 0:
+                    if abs(pieceStack[x]) == 2:
+                        image = pygame.transform.scale(selectPieceImage(pieceStack[x]), (int(board.squareSize*0.2), int(board.squareSize*0.6)))
+                    else:
+                        image = pygame.transform.scale(selectPieceImage(pieceStack[x]), (int(board.squareSize*0.6), int(board.squareSize*0.6)))
+                    win.blit(image, (coordinate[0]+int(board.squareSize*(0.05*(x+1))), coordinate[1]+int(board.squareSize*(0.05*(x+1)))))
 
 #check to see what button has been pressed
 def checkButtons(coordinate):
@@ -205,11 +230,7 @@ while run:
     win.blit(capstonesLabel, (640, 860))
     win.blit(renderStandard(str(game.piecesLeft(player)[1])), (780, 860))
     win.blit(sizeLabel, (480, 900))
-    for i in range(table.size):
-        for j in range(table.size):
-            squareIndex = j*table.size + i
-            boardLoc = renderBoard(game)
-            win.blit(boardLoc[squareIndex], table.squareCentres[squareIndex][:2])
+    renderPieces(game, table)
 
     #actions on events
     for event in pygame.event.get():
