@@ -1,4 +1,5 @@
-import pygame, os, sys, itertools, Tak
+import pygame, os, sys, itertools
+import Tak
 
 #display setup
 pygame.init()
@@ -12,9 +13,9 @@ pygame.display.set_caption("Tak")
 font = pygame.font.SysFont('Arial', 18)
 background = pygame.Surface(resolution)
 background.fill(colors['black'])
-pieceImages = {'lightflat':pygame.image.load('flat-light.png'), 'lightwall':pygame.image.load('wall-light.png'),
-                'lightcapstone':pygame.image.load('capstone-light.png'), 'darkflat':pygame.image.load('flat-dark.png'),
-                'darkwall':pygame.image.load('wall-dark.png'), 'darkcapstone':pygame.image.load('capstone-dark.png'),}
+pieceImages = {'lightflat':pygame.image.load('2D pieces/flat-light.png'), 'lightwall':pygame.image.load('2D pieces/wall-light.png'),
+                'lightcapstone':pygame.image.load('2D pieces/capstone-light.png'), 'darkflat':pygame.image.load('2D pieces/flat-dark.png'),
+                'darkwall':pygame.image.load('2D pieces/wall-dark.png'), 'darkcapstone':pygame.image.load('2D pieces/capstone-dark.png'),}
 
 #board and button classes
 class board(object):

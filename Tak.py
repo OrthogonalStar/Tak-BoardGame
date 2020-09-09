@@ -1,4 +1,5 @@
-import collections, Board as boa, End, Actions as act
+import collections
+import Board as boa, End, Actions as act
 from copy import deepcopy
 #initialize board and pies
 class TakGame(object):
