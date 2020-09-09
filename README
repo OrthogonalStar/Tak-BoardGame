@@ -2,8 +2,8 @@ Working to implement Tak in python.
 
 Tak is an abstract strategy game designed by James Earnest and Patrick Rothfuss, taken from Rothfuss' book the Wise Man's Fear.
 
-Rules for Tak
+Rules can be found here https://cheapass.com/wp-content/uploads/2016/07/Tak-Beta-Rules.pdf
 
-How this works
+This game needs python and pygame installed to run. It should be run from the TakGame.py file
 
-
+If you enjoy this please consider buying the physical game.
