@@ -123,7 +123,7 @@ def renderPieces(game, board):
             boardSquare = board.squareCentres[i*board.size+j]
             coordinate = boardSquare[:2]
             for x in range(len(pieceStack)):
-                if pieceStack[x] is not 0:
+                if pieceStack[x] != 0:
                     if abs(pieceStack[x]) == 2:
                         image = pygame.transform.scale(selectPieceImage(pieceStack[x]), (int(board.squareSize*0.2), int(board.squareSize*0.6)))
                     else:
@@ -166,13 +166,13 @@ def displayAction():
             for i in range(len(dropArray)):
                 location = move.start[0] + i*direction[0], move.start[1] + i*direction[1]
                 actionText.append(renderStandard(str(dropArray[i]) + ' at ' + str(location)))
-    elif type is not 0:
+    elif type != 0:
         actionText.append(renderStandard('Placing'))
-        if type is 1:
+        if type == 1:
             actionText.append(renderStandard('Flat stone'))
-        elif type is 2:
+        elif type == 2:
             actionText.append(renderStandard('Wall'))
-        elif type is 3:
+        elif type == 3:
             actionText.append(renderStandard('Capstone'))
     else:
         actionText.append(renderStandard('No current action'))
@@ -266,7 +266,7 @@ while run:
                 pastGames.append((game, table))
                 game = Tak.TakGame(int(selection))
                 table = board(int(selection))
-            elif type is not 0 and location is not None and game.checkLegalPlacement(location):
+            elif type != 0 and location is not None and game.checkLegalPlacement(location):
                 game.actPlace(player, location, type)
                 location = None
                 type = 0
@@ -290,7 +290,7 @@ while run:
             pygame.draw.rect(win, colors['lightGrey'], [butt.x, butt.y, butt.width, butt.height])
         else:
             pygame.draw.rect(win, colors['darkGrey'], [butt.x, butt.y, butt.width, butt.height])
-        win.blit(butt.disp, (butt.x + 10, butt.y + (butt.height/4)))
+        win.blit(butt.disp, (butt.x + 10, butt.y + int(butt.height/4)))
     if game.end():
         displayResults()
     displayAction()
