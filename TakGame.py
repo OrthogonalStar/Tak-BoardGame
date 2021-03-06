@@ -164,7 +164,7 @@ def displayAction():
             dropArray = move.dropArray()
             direction = move.direction
             for i in range(len(dropArray)):
-                location = move.start[0] + i*direction[0], move.start[1] + i*direction[1]
+                location = move.start[0] + (i+1)*direction[0], move.start[1] + (i+1)*direction[1]
                 actionText.append(renderStandard(str(dropArray[i]) + ' at ' + str(location)))
     elif type != 0:
         actionText.append(renderStandard('Placing'))
